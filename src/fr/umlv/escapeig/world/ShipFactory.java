@@ -3,6 +3,8 @@ package fr.umlv.escapeig.world;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 
+import fr.umlv.escapeig.gesture.GestureHandler;
+
 abstract class DescriptionShip {
 	int image;
 	PolygonShape shape;
@@ -34,6 +36,7 @@ public class ShipFactory {
 	public HeroShip createHeroShip (int maxLife) {
 		HeroShip ship = new HeroShip(maxLife);
 		insertInWorld(ship);
+		GestureHandler.self.listeners.add(ship.gestureListener);
 		return ship;
 	}
 	

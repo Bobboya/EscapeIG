@@ -6,18 +6,22 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import fr.umlv.escapeig.gesture.GestureHandler;
 import fr.umlv.escapeig.world.Actor;
 import fr.umlv.escapeig.world.Board;
 import fr.umlv.escapeig.world.ScrollingBackground;
 
-public class BoardView extends SurfaceView implements SurfaceHolder.Callback{
+public class BoardView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private final Board board;
 	private final Viewport viewportTransform;
 	private final BitmapManager bm;
+	private GestureDetector gestureDetector;
 	
 	private final Rect dstRect = new Rect();
 	private final Rect srcRect = new Rect();
@@ -29,6 +33,7 @@ public class BoardView extends SurfaceView implements SurfaceHolder.Callback{
 		this.board = game;
 		this.viewportTransform = new Viewport(Board.WIDTH, Board.HEIGHT, 0, 0);
 		this.bm = new BitmapManager(getResources());
+		this.gestureDetector = new GestureDetector(ctx, GestureHandler.self);
 		getHolder().addCallback(this);
 	}
 
@@ -49,8 +54,8 @@ public class BoardView extends SurfaceView implements SurfaceHolder.Callback{
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent me){
-		return true;
+	public boolean onTouchEvent(MotionEvent event){
+		return gestureDetector.onTouchEvent(event);
 	}
 
 

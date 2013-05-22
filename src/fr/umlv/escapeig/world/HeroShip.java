@@ -1,5 +1,11 @@
 package fr.umlv.escapeig.world;
 
+import org.jbox2d.common.Vec2;
+
+import android.util.Log;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
+
 
 /**
  * The hero ship
@@ -14,6 +20,17 @@ public class HeroShip extends Ship {
 	private int life;
 	private boolean isDead;
 	private int score;
+	private Vec2 pos = new Vec2();
+	
+	SimpleOnGestureListener gestureListener = new SimpleOnGestureListener() {
+		@Override
+		public boolean onScroll (MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+			Log.d("Gesture", "e1 = "+e1.getX()+", "+e1.getY());
+			Log.d("Gesture", "e2 = "+e1.getX()+", "+e1.getY());
+			Log.d("Gesture", "di = "+distanceX+", "+distanceY);
+			return true;
+		}
+	};
 
 	HeroShip(int maxLife) {
 		super(50f, 50f, ANGLE,
