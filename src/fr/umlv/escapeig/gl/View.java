@@ -3,7 +3,6 @@ package fr.umlv.escapeig.gl;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 import fr.umlv.escapeig.Game;
-import fr.umlv.escapeig.world.Board;
 
 public class View extends GLSurfaceView {
 	
