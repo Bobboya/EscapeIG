@@ -2,6 +2,7 @@ package fr.umlv.escapeig.gesture;
 
 import java.util.ArrayList;
 
+import android.util.Log;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 
@@ -13,6 +14,11 @@ public class GestureHandler extends SimpleOnGestureListener {
 	
 	private GestureHandler () {
 		
+	}
+	
+	@Override
+	public boolean onDown (MotionEvent e) {
+		return true;
 	}
 	
 	@Override

@@ -25,6 +25,10 @@ public class HeroShip extends Ship {
 	SimpleOnGestureListener gestureListener = new SimpleOnGestureListener() {
 		@Override
 		public boolean onScroll (MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+			Vec2 bPos = body.getPosition();
+			pos.x = bPos.x-distanceX;
+			pos.y = bPos.y+distanceY;
+			body.setTransform(pos, body.getAngle());
 			Log.d("Gesture", "e1 = "+e1.getX()+", "+e1.getY());
 			Log.d("Gesture", "e2 = "+e1.getX()+", "+e1.getY());
 			Log.d("Gesture", "di = "+distanceX+", "+distanceY);

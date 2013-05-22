@@ -5,9 +5,7 @@ import org.jbox2d.common.Vec2;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -78,7 +76,6 @@ public class BoardView extends SurfaceView implements SurfaceHolder.Callback {
 			srcRect.set(0, imgMin, sb.layerWidth, imgMax);
 			dstRect.set(0, screenY, viewportTransform.getScreenWidth(), viewportTransform.getScreenHeight());
 			painter.drawBitmap(bm.getBitmap(sb.img), srcRect, dstRect, null);
-			Log.d("Rect", srcRect.toShortString()+" / "+dstRect.toShortString());
 		}
 		
 		viewportTransform.setYFlip(true);
