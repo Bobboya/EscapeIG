@@ -53,6 +53,8 @@ public class BoardView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event){
+		if (event.getAction() == MotionEvent.ACTION_UP)
+			return GestureHandler.self.onUp(event);
 		return gestureDetector.onTouchEvent(event);
 	}
 

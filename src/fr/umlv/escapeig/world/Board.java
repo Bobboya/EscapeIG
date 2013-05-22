@@ -18,8 +18,8 @@ import fr.umlv.escapeig.view.BoardView;
  */
 public class Board {
 	
-	public static final int WIDTH = 600;
-	public static final int HEIGHT = 1000;
+	public static final int WIDTH = 100;
+	public static final int HEIGHT = 150;
 
 	/**
 	 * Number of Steps per second
@@ -41,12 +41,16 @@ public class Board {
 	public final ArrayList<ScrollingBackground> backgrounds;
 	private ShipFactory sf;
 	private BoardView listener;
+	private final Body groundBody;
 
 	private Board (int width, int height) {
 		this.world = new World(new Vec2(0,0));
 		this.actors = new ArrayList<Actor>();
 		this.backgrounds = new ArrayList<ScrollingBackground>();
 		this.running = false;
+		
+		this.groundBody = world.createBody(new BodyDef());
+		
 		play = new Thread (new Runnable() {
 			
 			@Override
@@ -75,18 +79,15 @@ public class Board {
 		return true;
 	}
 	
-	private void createWall (float x, float y, float width, float height) {
-		final BodyDef wallBodyDef = new BodyDef();
+	private void createWall (float x1, float y1, float x2, float y2) {
 		final FixtureDef wallFixtureDef = new FixtureDef();
-		wallFixtureDef.restitution = 0.25f;
+		wallFixtureDef.restitution = 0;
 		wallFixtureDef.friction = 1f;
 		wallFixtureDef.filter.groupIndex = WALL_INDEX;
 		
 		final EdgeShape groundShape = new EdgeShape();
-		groundShape.set(new Vec2(0,0), new Vec2(width, height));
-		wallBodyDef.position.set(x, y);
+		groundShape.set(new Vec2(x1,y1), new Vec2(x2, y2));
 		
-		final Body groundBody = world.createBody(wallBodyDef);
 		wallFixtureDef.shape = groundShape;
 		groundBody.createFixture(wallFixtureDef);
 	}
@@ -101,11 +102,13 @@ public class Board {
 	}
 	
 	private static Board create(int width, int height) {
+		
 		Board board = new Board(width, height);
 		board.createWall(0, 0, width, 0);
-		board.createWall(0, height, width, 0);
 		board.createWall(0, 0, 0, height);
-		board.createWall(width, 0, 0, height);
+		board.createWall(0, height, width, height);
+		board.createWall(width, 0, width, height);
+		
 		board.sf = new ShipFactory(board);
 		return board;
 	}

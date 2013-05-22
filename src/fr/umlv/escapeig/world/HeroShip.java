@@ -2,10 +2,8 @@ package fr.umlv.escapeig.world;
 
 import org.jbox2d.common.Vec2;
 
-import android.util.Log;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
-
+import fr.umlv.escapeig.gesture.ComplexOnGestureListener;
 
 /**
  * The hero ship
@@ -14,6 +12,7 @@ import android.view.MotionEvent;
 public class HeroShip extends Ship {
 
 	public static final int GROUP_INDEX = -1;
+	private static final int SPEED = 1;
 	private static final float ANGLE = 0;
 	
 	private final int maxLife;
@@ -22,16 +21,20 @@ public class HeroShip extends Ship {
 	private int score;
 	private Vec2 pos = new Vec2();
 	
-	SimpleOnGestureListener gestureListener = new SimpleOnGestureListener() {
+	ComplexOnGestureListener gestureListener = new ComplexOnGestureListener() {
 		@Override
 		public boolean onScroll (MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-			Vec2 bPos = body.getPosition();
-			pos.x = bPos.x-distanceX;
-			pos.y = bPos.y+distanceY;
-			body.setTransform(pos, body.getAngle());
-			Log.d("Gesture", "e1 = "+e1.getX()+", "+e1.getY());
-			Log.d("Gesture", "e2 = "+e1.getX()+", "+e1.getY());
-			Log.d("Gesture", "di = "+distanceX+", "+distanceY);
+			pos.x = SPEED*(distanceX > 0 ? -1 : 1)*(distanceX == 0 ? 0 : 1);
+			pos.y = SPEED*(distanceY > 0 ? 1 : -1)*(distanceY == 0 ? 0 : 1);
+			body.applyLinearImpulse(pos, body.getWorldCenter());
+			return true;
+		}
+		
+		@Override
+		public boolean onUp (MotionEvent e1) {
+			pos.x = 0;
+			pos.y = 0;
+			body.setLinearVelocity(pos);
 			return true;
 		}
 	};
