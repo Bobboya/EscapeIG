@@ -13,8 +13,8 @@ public final class R {
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
          */
-        public static final int activity_horizontal_margin=0x7f030000;
-        public static final int activity_vertical_margin=0x7f030001;
+        public static final int activity_horizontal_margin=0x7f040000;
+        public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
         public static final int boom=0x7f020000;
@@ -37,22 +37,36 @@ public final class R {
         public static final int shield=0x7f020011;
         public static final int ship1=0x7f020012;
         public static final int ship2=0x7f020013;
-        public static final int ship3=0x7f020014;
-        public static final int ship4=0x7f020015;
-        public static final int tex=0x7f020016;
+        public static final int ship2_1=0x7f020014;
+        public static final int ship2_10=0x7f020015;
+        public static final int ship2_11=0x7f020016;
+        public static final int ship2_2=0x7f020017;
+        public static final int ship2_3=0x7f020018;
+        public static final int ship2_4=0x7f020019;
+        public static final int ship2_5=0x7f02001a;
+        public static final int ship2_6=0x7f02001b;
+        public static final int ship2_7=0x7f02001c;
+        public static final int ship2_8=0x7f02001d;
+        public static final int ship2_9=0x7f02001e;
+        public static final int ship3=0x7f02001f;
+        public static final int ship4=0x7f020020;
+        public static final int tex=0x7f020021;
     }
     public static final class id {
-        public static final int action_settings=0x7f070000;
+        public static final int action_settings=0x7f080000;
     }
     public static final class menu {
-        public static final int main=0x7f060000;
-        public static final int open_gles20=0x7f060001;
+        public static final int main=0x7f070000;
+        public static final int open_gles20=0x7f070001;
+    }
+    public static final class raw {
+        public static final int gestures=0x7f030000;
     }
     public static final class string {
-        public static final int action_settings=0x7f040001;
-        public static final int app_name=0x7f040000;
-        public static final int hello_world=0x7f040002;
-        public static final int title_activity_game=0x7f040003;
+        public static final int action_settings=0x7f050001;
+        public static final int app_name=0x7f050000;
+        public static final int hello_world=0x7f050002;
+        public static final int title_activity_game=0x7f050003;
     }
     public static final class style {
         /** 
@@ -65,10 +79,10 @@ public final class R {
             backward-compatibility can go here.
         
          */
-        public static final int AppBaseTheme=0x7f050000;
+        public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f050001;
+        public static final int AppTheme=0x7f060001;
     }
 }

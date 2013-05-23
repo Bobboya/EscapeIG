@@ -1,6 +1,8 @@
 package fr.umlv.escapeig.world;
 
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Filter;
+import org.jbox2d.dynamics.Fixture;
 
 import android.view.MotionEvent;
 import fr.umlv.escapeig.gesture.ComplexOnGestureListener;
@@ -12,129 +14,30 @@ import fr.umlv.escapeig.gesture.ComplexOnGestureListener;
 public class HeroShip extends Ship {
 
 	public static final int GROUP_INDEX = -1;
-	private static final int SPEED = 1;
+	private static final float SPEED = 0.2f;
+	private static final int MOTION_MARGIN = 30;
 	private static final float ANGLE = 0;
+	private static final int LOOPING_DURATION = 2*Board.STEP_PER_SECOND;
 	
 	private final int maxLife;
 	private int life;
-	private boolean isDead;
-	private int score;
 	private Vec2 pos = new Vec2();
+	private boolean godOn = false;
+	private final int[] loopingImages;
+	private int loopingCurrentTime;
+	private int loopingPos;
 	
-	ComplexOnGestureListener gestureListener = new ComplexOnGestureListener() {
-		@Override
-		public boolean onScroll (MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-			pos.x = SPEED*(distanceX > 0 ? -1 : 1)*(distanceX == 0 ? 0 : 1);
-			pos.y = SPEED*(distanceY > 0 ? 1 : -1)*(distanceY == 0 ? 0 : 1);
-			body.applyLinearImpulse(pos, body.getWorldCenter());
-			return true;
-		}
-		
-		@Override
-		public boolean onUp (MotionEvent e1) {
-			pos.x = 0;
-			pos.y = 0;
-			body.setLinearVelocity(pos);
-			return true;
-		}
-	};
+	GestureListener gestureListener = new GestureListener(); 
 
 	HeroShip(int maxLife) {
 		super(50f, 50f, ANGLE,
 			ShipType.HERO.desc(),
 			GROUP_INDEX);
-		
+		this.loopingImages = ((DescriptionHeroShip)ShipType.HERO.desc()).loopingImages;
 		this.maxLife = maxLife;
 		this.life = maxLife;
-		this.isDead = false;
 	}
-
-//	@Override
-//	public void gestureReceived(Gesture g) {
-//		switch (g.type()) {
-//		case LINE:
-//			lineGesture(g);
-//			break;
-//		case POINT:
-//			pointGesture(g);
-//			break;
-//		case LOOPING:
-//			loopingGesture(g);
-//			break;
-//		default:
-//			break;
-//		}
-//	}
-
-//	private void lineGesture (Gesture g) {
-//		//Check if the gesture line append on the weapon
-//		Point2D clickDownPoint = g.getOrigin();
-//		AABB box = getWorld().worldBoxFromScreen(new Vec2((float)clickDownPoint.getX(),
-//				(float)clickDownPoint.getY()), WEAPON_GESTURE_TOLERANCE);
-//
-//		AABB center = new AABB(getWeapon().getPosition(), getWeapon().getPosition());
-//
-//		//fire the weapon
-//		if (center.contains(box)) {
-//			Point2D clickUpPoint = g.getEnd();
-//			Vec2 clickOrigin = getWorld().worldCoordinateFromScreen((float)clickDownPoint.getX(),
-//					(float)clickDownPoint.getY());
-//			Vec2 clickDest = getWorld().worldCoordinateFromScreen((float)clickUpPoint.getX(),
-//					(float)clickUpPoint.getY());
-//			float theta = MathUtils.fastAtan2(clickDest.y-clickOrigin.y,
-//					clickDest.x-clickOrigin.x);
-//			
-//			fire(theta);
-//			return;
-//		}
-//		
-//		//apply linear move to the ship
-//		BodyBehaviors.createMovementFor(getWorld(), getBody(), g.getDirection().theta(), g.value(), 1);
-//	}
-
-//	private void pointGesture (Gesture g) {
-//		//Check if the click  append on the ship
-//		Point2D clickDownPoint = g.getOrigin();
-//		AABB box = getWorld().worldBoxFromScreen(new Vec2((float)clickDownPoint.getX(),
-//				(float)clickDownPoint.getY()), WEAPON_GESTURE_TOLERANCE);
-//
-//		AABB center = new AABB(getPosition(), getPosition());
-//
-//		//Create the weapon
-//		if (center.contains(box)) {
-//			System.out.println("click");
-//			loadWeapon();
-//			return;
-//		}
-//	}
-//	
-//	private void loopingGesture (Gesture g) {
-//		final Fixture fixt = getBody().getFixtureList();
-//		final Filter filter = fixt.getFilterData();
-//		final AnimatedWorldPainter painter = getPainter();
-//		
-//		Behavior godOn = new Behavior () {
-//			@Override
-//			public void apply() {
-//				setPainter(LoopingPainter.create(getBody(), LOOPING_TIME));
-//				getBody().setLinearVelocity(new Vec2());
-//				filter.groupIndex = GameWorld.WALL_INDEX;
-//				fixt.setFilterData(filter);
-//			}
-//		};
-//		getWorld().scheduledBehaviorIn(0, godOn);
-//		
-//		Behavior godOff = new Behavior () {
-//			@Override
-//			public void apply() {
-//				setPainter(painter);
-//				filter.groupIndex = GROUP_INDEX;
-//				fixt.setFilterData(filter);
-//			}
-//		};
-//		getWorld().scheduledBehaviorIn(LOOPING_TIME+1, godOff);
-//	}
-
+	
 //	@Override
 //	public void touch(Actor actor) {
 //		if (actor.getType() == WorldActor.Type.ENNEMY || actor.getType() == WorldActor.Type.WEAPON) {
@@ -167,22 +70,6 @@ public class HeroShip extends Ship {
 	public int getLife() {
 		return life;
 	}
-	
-	/**
-	 * 
-	 * @return return true if the hero is dead
-	 */
-	public boolean isDead () {
-		return isDead;
-	}
-	
-	/**
-	 * return the score of the hero
-	 * @return the score of the ship
-	 */
-	public int getScore () {
-		return score;
-	}
 
 	@Override
 	public Type getType() {
@@ -191,20 +78,96 @@ public class HeroShip extends Ship {
 
 	@Override
 	public void step() {
-		// TODO Auto-generated method stub
+		gestureListener.counter++;
+		if (gestureListener.counter >= Board.STEP_PER_SECOND/3)
+			gestureListener.onUp(null);
 		
+		if (godOn) {
+			loopingCurrentTime++;
+			loopingPos = (int)((float)(loopingCurrentTime*(loopingImages.length-1))/LOOPING_DURATION);
+			if (loopingCurrentTime > LOOPING_DURATION) {
+				godOff();
+			}
+		}
 	}
 
 	@Override
 	public void touch(Actor actor) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected void resetWeapon() {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public int getImage() {
+		if (!godOn)	return shipDescription.image;
+		return loopingImages[loopingPos];
+	}
+	
+	private class GestureListener extends ComplexOnGestureListener {
+		
+		private MotionEvent last;
+		int counter = 0;
+		
+		@Override
+		public boolean onScroll (MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+			if (godOn) return false;
+			counter = 0;
+			if (last == null) last = e1;
+			float dx = last.getX()*e2.getX();
+			float dy = last.getY()*e2.getY();
+			last = e2;
+			//Avoid trembling
+			//TODO dpi dependant
+			if (dx < MOTION_MARGIN && dx > -MOTION_MARGIN) distanceX = 0;
+			if (dy < MOTION_MARGIN && dy > -MOTION_MARGIN) distanceY = 0;
+			
+			pos.x = (SPEED)*(distanceX > 0 ? -1 : 1)*(distanceX == 0 ? 0 : 1);
+			pos.y = (SPEED)*(distanceY > 0 ? 1 : -1)*(distanceY == 0 ? 0 : 1);
+			body.applyLinearImpulse(pos, body.getWorldCenter());
+			return true;
+		}
+		
+		@Override
+		public boolean onUp (MotionEvent e1) {
+			pos.x = 0;
+			pos.y = 0;
+			body.setLinearVelocity(pos);
+			return true;
+		}
+
+		public boolean onRing () {
+			godOn();
+			return true;
+		}
+		
+	}
+	
+	private void godOff () {
+		godOn = false;
+		Fixture fixt = body.getFixtureList();
+		Filter filter = fixt.getFilterData();
+		filter.groupIndex = GROUP_INDEX;
+		fixt.setFilterData(filter);
+	}
+	
+	private void godOn () {
+		godOn = true;
+		loopingPos = 0;
+		loopingCurrentTime = 0;
+		
+		pos.x = 0;
+		pos.y = 0;
+		body.setLinearVelocity(pos);
+		
+		//God mode
+		Fixture fixt = body.getFixtureList();
+		Filter filter = fixt.getFilterData();
+		filter.groupIndex = Board.WALL_INDEX;
+		fixt.setFilterData(filter);
 	}
 }
 

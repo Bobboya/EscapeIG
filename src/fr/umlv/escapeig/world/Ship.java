@@ -15,7 +15,7 @@ public abstract class Ship implements Actor {
 	private final Vec2 tl;
 	private final Vec2 br;
 	
-	private final DescriptionShip shipDescription;
+	final DescriptionShip shipDescription;
 	
 	Body body;
 	Weapon weapon;
