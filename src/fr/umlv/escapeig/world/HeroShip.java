@@ -95,11 +95,6 @@ public class HeroShip extends Ship {
 	public void touch(Actor actor) {
 		
 	}
-
-	@Override
-	protected void resetWeapon() {
-		
-	}
 	
 	@Override
 	public int getImage() {
@@ -143,7 +138,6 @@ public class HeroShip extends Ship {
 			godOn();
 			return true;
 		}
-		
 	}
 	
 	private void godOff () {
@@ -169,6 +163,7 @@ public class HeroShip extends Ship {
 		filter.groupIndex = Board.WALL_INDEX;
 		fixt.setFilterData(filter);
 	}
+	
 }
 
 

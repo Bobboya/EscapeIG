@@ -10,24 +10,20 @@ import org.jbox2d.dynamics.FixtureDef;
 import fr.umlv.escapeig.R;
 import fr.umlv.escapeig.world.Actor;
 import fr.umlv.escapeig.world.Actor.Type;
+import fr.umlv.escapeig.world.Ship;
 
-class Missile implements Weapon {
+class Missile extends Weapon {
 	
 	private static final int WEAPON_PADDING = 25;
 
 	//private final Board world;
-	private final Actor actor;
-	private final int image;
-	private final int groupIndex;
-	//private AnimatedWorldPainter painter;
-	//private Behavior behavior;
-	private Body body;
+	Ship ship;
+	int image;
+	int groupIndex;
+	Body body;
 	
 	Missile (Actor actor, int groupIndex) {
-		this.image = R.drawable.missile;
-		//this.world = actor.getWorld();
-		this.actor = actor;
-		this.groupIndex = groupIndex;
+
 //		this.painter = new AnimatedWorldPainter() {
 //			@Override
 //			public void apply() {
@@ -51,19 +47,6 @@ class Missile implements Weapon {
 		return Actor.Type.WEAPON;
 	}
 
-	@Override
-	public Vec2 getPosition() {
-		if (body != null) return new Vec2(body.getPosition());
-		Vec2 pos = actor.getPosition();
-		pos.y += WEAPON_PADDING;
-		return pos;
-	}
-
-	@Override
-	public float getAngle() {
-		if (body != null) return body.getAngle();
-		return 0;
-	}
 
 	@Override
 	public void touch(Actor actor) {
@@ -108,7 +91,6 @@ class Missile implements Weapon {
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

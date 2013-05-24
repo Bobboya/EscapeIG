@@ -15,7 +15,7 @@ import fr.umlv.escapeig.world.Actor;
 import fr.umlv.escapeig.world.Actor.Type;
 import fr.umlv.escapeig.world.Board;
 
-class Shiboleet implements Weapon {
+class Shiboleet extends Weapon {
 	
 	private static final int LOADING_TIME = 2;
 	private static final int BALL_SIZE = 5;

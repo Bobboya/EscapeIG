@@ -41,7 +41,8 @@ public class ShipFactory {
 	}
 	
 	EnnemyShip createEnnemy(ShipType type, float x, float y, boolean insert) throws ShipCreationException {
-		EnnemyShip ship = new EnnemyShip(x, y, type.desc());
+		EnnemyShip ship = new EnnemyShip();
+		ship.init(x, y, type.desc());
 		if (insert)insertInWorld(ship);
 		return ship;
 	}

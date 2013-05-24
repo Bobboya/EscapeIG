@@ -22,10 +22,9 @@ public interface Actor extends ContactListener {
 	 * @return angle of the actor
 	 */
 	float getAngle();
-	
 	void step();
-	
 	int getImage();
+	int getGroup();
 	
 	/**
 	 * Enum of all element of WorldActor
