@@ -11,7 +11,7 @@ public enum ShipType {
 	EARTH(new DescriptionEarthShip(),  Actor.Type.ENNEMY, WeaponType.FIREBALL),
 	HERO(new DescriptionHeroShip(),  Actor.Type.ENNEMY, WeaponType.MISSILE);
 	
-	private final DescriptionShip desc;
+	public final DescriptionShip desc;
 	private final Actor.Type type;
 	private final WeaponType weapon;
 	
@@ -24,5 +24,6 @@ public enum ShipType {
 	DescriptionShip desc() {return desc;}
 	Actor.Type type() {return type;}
 	WeaponType weapon() {return weapon;}
+	
 	
 }

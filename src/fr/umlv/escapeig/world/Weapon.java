@@ -16,7 +16,6 @@ public abstract class Weapon implements Actor {
 	
 	private final Vec2 position = new Vec2();
 	
-	
 	final BodyDef bdef = new BodyDef();
 	final FixtureDef fdef = new FixtureDef();
 	final Vec2 tl = new Vec2();
@@ -37,6 +36,7 @@ public abstract class Weapon implements Actor {
 	public void touch (Actor act) {
 		wf.pools.get(type.ordinal()).add(this);
 		board.actors.remove(this);
+		board.world.destroyBody(body);
 	}
 	
 	@Override
