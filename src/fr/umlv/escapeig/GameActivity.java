@@ -4,13 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.gesture.GestureOverlayView;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
-import fr.umlv.escapeig.builder.BuilderWorld;
 import fr.umlv.escapeig.gesture.GestureHandler;
 import fr.umlv.escapeig.view.BoardView;
 import fr.umlv.escapeig.view.GestureView;
@@ -33,9 +29,6 @@ public class GameActivity extends Activity {
 
 		GestureHandler.self.loadGesture(this, R.raw.gestures);
 
-		System.out.println("GAME ACTIVITY");
-		
-<<<<<<< HEAD
 		Intent intent = new Intent(this, ImportLevelListActivity.class);
 		startActivityForResult(intent, 1);
 	}
@@ -43,12 +36,8 @@ public class GameActivity extends Activity {
 	private void initiate(String path) {
 		board = Board.createBoard(this, path);
 
-=======
-		board = Board.createBoard(this,"/mnt/sdcard/test21.lvl");
-		
->>>>>>> Nico
 		boardView = new BoardView(this, board);
-
+		
 		mView = new GestureView(this);
 		mView.setGestureVisible(false);
 		mView.addOnGesturePerformedListener(GestureHandler.self);
@@ -67,7 +56,7 @@ public class GameActivity extends Activity {
 				initiate(result);
 			}
 			else {
-				// probleme result result code ou valeurs x et y
+				// probleme result
 				return;
 			}
 		} 
