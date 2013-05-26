@@ -35,6 +35,7 @@ public class ShipFactory {
 	
 	EnnemyShip createEnnemy(ShipType type, float x, float y, boolean insert) {
 		EnnemyShip ship = new EnnemyShip();
+		ship.board = board;
 		ship.weaponFactory = board.getWeaponFactory();
 		ship.init(x, y, type.desc());
 		if (insert)insertInWorld(ship);

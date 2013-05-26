@@ -20,6 +20,10 @@ class Shiboleet extends Weapon {
 	private final Miniboleet bodies[];
 	private int current;
 	private final Vec2 force;
+	private final Board board;
+	
+	private final Vec2 temptl = new Vec2();
+	private final Vec2 tempbr = new Vec2();
 	
 	private static class Miniboleet implements Actor {
 		
@@ -48,7 +52,10 @@ class Shiboleet extends Weapon {
 		}
 
 		@Override
-		public void touch(Actor actor) {}
+		public void touch(Actor actor) {
+			shiboleet.board.actors.remove(this);
+			shiboleet.board.world.destroyBody(body);
+		}
 
 		@Override
 		public Type getType() {
@@ -80,27 +87,26 @@ class Shiboleet extends Weapon {
 
 		@Override
 		public Vec2 getTopLeft() {
-			Vec2 pos = getPosition();
-			topLeft.set(pos.x-BALL_SIZE, pos.y+BALL_SIZE);
+			topLeft.set(-BALL_SIZE, +BALL_SIZE);
 			return topLeft;
 		}
 
 		@Override
 		public Vec2 getBottomRight() {
-			Vec2 pos = getPosition();
-			bottomRight.set(pos.x+BALL_SIZE, pos.y-BALL_SIZE);
+			bottomRight.set(BALL_SIZE, -BALL_SIZE);
 			return bottomRight;
 		}
 		
 		void init () {
 			fdef.filter.groupIndex = shiboleet.getGroup();
 			bdef.position = shiboleet.getPosition();
-			body = shiboleet.body.getWorld().createBody(bdef);
+			body = shiboleet.board.world.createBody(bdef);
 			body.createFixture(fdef);
 		}
 	}
 
-	Shiboleet () {
+	Shiboleet (Board board) {
+		this.board = board;
 		bodies = new Miniboleet[BALL_NUMBER];
 		for (int i=0; i<bodies.length; ++i) {
 			bodies[i] = new Miniboleet(this);
@@ -111,17 +117,17 @@ class Shiboleet extends Weapon {
 	@Override
 	public Vec2 getTopLeft () {
 		Vec2 res = super.getTopLeft();
-		res.x = current*res.x/LOADING_TIME;
-		res.y = current*res.y/LOADING_TIME;
-		return res;
+		temptl.x = current*res.x/LOADING_TIME;
+		temptl.y = current*res.y/LOADING_TIME;
+		return temptl;
 	}
 	
 	@Override
 	public Vec2 getBottomRight () {
 		Vec2 res = super.getBottomRight();
-		res.x = current*res.x/LOADING_TIME;
-		res.y = current*res.y/LOADING_TIME;
-		return res;
+		tempbr.x = current*res.x/LOADING_TIME;
+		tempbr.y = current*res.y/LOADING_TIME;
+		return tempbr;
 	}
 
 	@Override

@@ -16,6 +16,8 @@ import android.graphics.PointF;
 import android.util.Log;
 import fr.umlv.escapeig.builder.BuilderShip;
 import fr.umlv.escapeig.builder.BuilderWorld;
+import fr.umlv.escapeig.gesture.ComplexOnGestureListener;
+import fr.umlv.escapeig.gesture.GestureHandler;
 import fr.umlv.escapeig.view.BoardView;
 
 /**
@@ -30,14 +32,14 @@ public class Board {
 	/**
 	 * Number of Steps per second
 	 */
-	public static final int STEP_PER_SECOND = 60;
+	public static final int STEP_PER_SECOND = 30;
 	/**
 	 * Group index of the walls blocking the player
 	 */
 	public static final int WALL_INDEX = -2;
-	private static final int TIME_STEP = (int)(1.0/STEP_PER_SECOND*1000f);
+	private static final int TIME_STEP = (int)((1.0/STEP_PER_SECOND)*1000f);
 	private static final int VELOCITY_ITERATIONS = 2;
-	private static final int POSITION_ITERATIONS = 2;
+	private static final int POSITION_ITERATIONS = 4;
 	private static final float BACKGROUND_SPEED = 2;
 
 	private boolean running;
@@ -52,6 +54,16 @@ public class Board {
 	
 	private BoardView listener;
 	private final Body groundBody;
+	
+	private final ComplexOnGestureListener gListener = new ComplexOnGestureListener () {
+			
+			@Override
+			public boolean onSquare () {
+				if (play.isInterrupted()) play.start();
+				else play.interrupt();
+				return false;
+			}
+	};
 
 	private Board (int width, int height) {
 		
@@ -75,6 +87,7 @@ public class Board {
 				}
 			}
 		});
+		GestureHandler.self.listeners.add(gListener);
 	}
 
 	/**
@@ -159,8 +172,8 @@ public class Board {
 				toLoad.background.getWidth(),
 				toLoad.background.getHeight());
 		
-		toLoad.screenHeight = 1100;
-		toLoad.screenWidth = 700;
+		toLoad.screenHeight = toLoad.screenHeight;
+		toLoad.screenWidth = toLoad.screenWidth;
 		
 		ShipType shipTypes[] = ShipType.values();
 		ShipFactory sf = board.getShipFactory();
@@ -170,15 +183,8 @@ public class Board {
 			float x = s.x*widthRatio;
 			float y = s.yOrigin*heightRatio+Board.HEIGHT;
 			EnnemyShip ennemy = sf.createEnnemy(shipTypes[s.ordinal], x, y);
-			if (s.gesture != null) {
-				for (PointF p : s.gesture) {
-					p.x = p.x*widthRatio;
-					p.y = p.y*heightRatio;
-				}
-			}
-			ennemy.gesture = s.gesture;
 			if (ennemy.body == null) Log.d("Init", "body null");
-			ennemy.body.applyForceToCenter(new Vec2(0,-2));
+			ennemy.body.applyForceToCenter(new Vec2(0,-0.0001f));
 		}
 		board.getShipFactory().getHeroShip();
 		

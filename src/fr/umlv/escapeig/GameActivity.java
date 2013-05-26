@@ -29,7 +29,7 @@ public class GameActivity extends Activity {
 		
 		GestureHandler.self.loadGesture(this, R.raw.gestures);
 		
-		board = Board.createBoard(this, LA STRING DE L\'INTENT);
+		board = Board.createBoard(this,"/mnt/sdcard/test21.lvl");
 		
 		boardView = new BoardView(this, board);
 		

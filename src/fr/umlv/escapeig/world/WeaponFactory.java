@@ -43,7 +43,7 @@ public class WeaponFactory {
 				w = new Missile();
 				break;
 			case SHIBOLEET:
-				w =  new Shiboleet();
+				w =  new Shiboleet(board);
 				break;
 			default:
 				w = null;
@@ -73,7 +73,8 @@ public class WeaponFactory {
 		w.init(ship, type.wd);
 		board.actors.add(w);
 		if (ship.body == null) return null;
-		//if (w.fdef == null) return null;
+		if (w.fdef == null) return null;
+		if (w.fdef.shape == null) return null;
 		ship.body.createFixture(w.fdef);
 		
 		return w;

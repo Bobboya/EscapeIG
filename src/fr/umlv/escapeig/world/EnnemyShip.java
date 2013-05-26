@@ -2,12 +2,9 @@ package fr.umlv.escapeig.world;
 
 import java.util.ArrayList;
 
-import org.jbox2d.common.MathUtils;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 
 import android.graphics.PointF;
-import android.util.Log;
 
 /**
  * An ennemy ship
@@ -19,24 +16,7 @@ public class EnnemyShip extends Ship {
 	private static final float ANGLE = 0;
 	private boolean isDead;
 	ArrayList<PointF> gesture;
-	
-	@Override
-	public Vec2 getPosition () {
-		Log.d("Ennemy", "pos: "+super.getPosition());
-		return super.getPosition();
-	}
-	
-	@Override
-	public Vec2 getTopLeft() {
-		Log.d("Ennemy", "tl: "+super.getTopLeft());
-		return super.getTopLeft();
-	}
-	
-	@Override
-	public Vec2 getBottomRight () {
-		Log.d("Ennemy", "br: "+super.getBottomRight());
-		return super.getBottomRight();
-	}
+	Board board;
 
 	@Override
 	public void fire(float x, float y) {
@@ -57,8 +37,13 @@ public class EnnemyShip extends Ship {
 
 	@Override
 	public void touch(Actor actor) {
-		// TODO Auto-generated method stub
-		
+		board.actors.remove(this);
+		board.world.destroyBody(body);
+	}
+	
+	@Override
+	public float getAngle() {
+		return super.getAngle()+180;
 	}
 	
 	void init (float x, float y, DescriptionShip sd) {
@@ -70,7 +55,7 @@ public class EnnemyShip extends Ship {
 		bdef.angle = ANGLE;
 		
 		fdef.restitution = 0;
-		fdef.density = 0;
+		fdef.density = 0.00001f;
 		fdef.shape = sd.shape;
 		fdef.filter.groupIndex = GROUP_INDEX;
 		

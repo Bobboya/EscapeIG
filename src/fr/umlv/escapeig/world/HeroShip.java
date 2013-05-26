@@ -149,7 +149,7 @@ public class HeroShip extends Ship {
 		@Override
 		public boolean onSingleTapUp (MotionEvent e) {
 			loadWeapon();
-			return true;
+			return false;
 		}
 		
 		@Override

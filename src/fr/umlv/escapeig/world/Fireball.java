@@ -2,8 +2,6 @@ package fr.umlv.escapeig.world;
 
 import org.jbox2d.common.Vec2;
 
-import android.util.Log;
-
 
 class Fireball extends Weapon {
 
@@ -16,18 +14,11 @@ class Fireball extends Weapon {
 	
 	@Override
 	public boolean fire(float x, float y) {
-		if (current < LOADING_TIME) return false;
 		fdef.shape.m_radius = current*DescriptionFireball.RADIUS/LOADING_TIME;
 		insertInWorld();
 		impulse.set(x,y);
 		body.applyLinearImpulse(impulse, body.getWorldCenter());
 		return true;
-	}
-	
-	@Override
-	public Vec2 getPosition() {
-		Log.d("Weapon", super.getPosition().toString());
-		return super.getPosition();
 	}
 	
 	@Override

@@ -13,6 +13,7 @@ class DescriptionShiboleet extends DescriptionWeapon {
 		
 		CircleShape pShape = new CircleShape();
 		pShape.m_radius = Shiboleet.BALL_SIZE;
+		shape = pShape;
 		
 		topLeft = new Vec2(-2.5f, 2.5f);
 		bottomRight = new Vec2(2.5f,-2.5f);

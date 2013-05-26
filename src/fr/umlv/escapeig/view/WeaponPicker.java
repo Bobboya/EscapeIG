@@ -42,6 +42,7 @@ class WeaponPicker extends ComplexOnGestureListener {
 	@Override
 	public boolean onSingleTapUp(MotionEvent e)  {
 		float pos = e.getX()*ratio;
+		Log.d("Weapon", e.toString());
 		if (e.getY() > ylimit || e.getX() > xlimit) return true;
 		ship.defaultWeapon = types[(int)pos];
 		Log.d("Weapon", ship.defaultWeapon.name());
