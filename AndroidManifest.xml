@@ -40,15 +40,16 @@
             android:parentActivityName="fr.umlv.escapeig.BuilderActivity" >
         </activity>
         <activity
-            android:name="fr.umlv.escapeig.builder.ChooseBackListActivity"
+            android:name="fr.umlv.escapeig.ChooseBackListActivity"
             android:label="@string/backActivity"
             android:parentActivityName="fr.umlv.escapeig.BuilderActivity" >
         </activity>
         <activity
-            android:name="fr.umlv.escapeig.builder.ImportLevelListActivity"
+            android:name="fr.umlv.escapeig.ImportLevelListActivity"
             android:label="@string/backActivity"
-            android:parentActivityName="fr.umlv.escapeig.BuilderActivity" >
+            android:parentActivityName="fr.umlv.escapeig.MainActivity" >
         </activity>
+
     </application>
 
 </manifest>
