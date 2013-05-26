@@ -12,7 +12,7 @@ import fr.umlv.escapeig.view.BoardView;
 import fr.umlv.escapeig.view.GestureView;
 import fr.umlv.escapeig.world.Board;
 
-public class Game extends Activity {
+public class GameActivity extends Activity {
 	
 	Board board;
 	BoardView boardView;

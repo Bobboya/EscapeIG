@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true" >
         <activity
-            android:name="fr.umlv.escapeig.Game"
+            android:name="fr.umlv.escapeig.GameActivity"
             android:label="@string/title_activity_game" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

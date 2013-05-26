@@ -1,9 +1,7 @@
-package fr.umlv.escapeig.builder;
+package fr.umlv.escapeig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import fr.umlv.escapeig.R;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -12,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import fr.umlv.escapeig.R;
 
 public class PopupListActivity extends ListActivity {
 
@@ -24,6 +23,7 @@ public class PopupListActivity extends ListActivity {
 
 		HashMap<String, String> map;
 
+		
 		map = new HashMap<String, String>();
 		map.put("title", "Vaisseau 1");        
 		map.put("img", String.valueOf(R.drawable.ship1));
@@ -39,7 +39,6 @@ public class PopupListActivity extends ListActivity {
 		map.put("title", "Vaisseau 3");
 		map.put("img", String.valueOf(R.drawable.ship4));
 		listItem.add(map);
-
 
 		SimpleAdapter mSchedule = new SimpleAdapter (this.getBaseContext(), listItem, R.layout.activity_popup_choose_ship,
 				new String[] {"img", "title"}, new int[] {R.id.img, R.id.title});

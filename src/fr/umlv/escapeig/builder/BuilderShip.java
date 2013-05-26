@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 
-public class Ship implements Serializable {
+public class BuilderShip implements Serializable {
 
 	private static final long serialVersionUID = -7577703160863033380L;
 	
@@ -18,17 +18,20 @@ public class Ship implements Serializable {
 	
 	public Bitmap bitmap;
 	
+	public int ordinal;
+	
 	public ArrayList<PointF> gesture;
 	
-	public Ship() {
-		this(0, 0, null, null);
+	public BuilderShip() {
+		this(0, 0, null, 0, null);
 	}
 	
-	public Ship(float x, float y, Bitmap bitmap, ArrayList<PointF> gesture) {
+	public BuilderShip(float x, float y, Bitmap bitmap, int ordinal, ArrayList<PointF> gesture) {
 		this.x = x;
 		this.yActual = y;
 		this.yOrigin = y;
 		this.bitmap = bitmap;
+		this.ordinal = ordinal;
 		this.gesture = gesture;
 	}
 	

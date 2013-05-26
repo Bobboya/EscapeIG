@@ -2,11 +2,16 @@ package fr.umlv.escapeig.builder;
 
 import java.util.ArrayList;
 
+import fr.umlv.escapeig.BuilderActivity;
+import fr.umlv.escapeig.R;
+import fr.umlv.escapeig.world.ShipType;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -14,16 +19,13 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
-/**
- * @author louis
- *
- */
 public class Builder extends SurfaceView {
 
 	public static final float START_POSITION = 690;
 	public static final float LEFT_POSITION = 0;
 	public static final int TIME_LONG_PRESS = 500;
 	public static final int MAX_ENNEMIES = 25;
+	public static final int MARGIN_DETECT_SHIP = 60; 
 
 	protected Context context;
 
@@ -39,27 +41,58 @@ public class Builder extends SurfaceView {
 	protected float yValue = 0;
 
 	// Save the date of world under definition
-	protected World world;
-	
+	protected BuilderWorld world;
+
 	// Manage gesture scroll and long pressed
 	protected GestureDetector mGestureDetector;
 	protected GestureDetector.SimpleOnGestureListener mScrollHandler = new GestureDetector.SimpleOnGestureListener() {
 
-		boolean isScrolling = true;
-		
+		boolean onShip = false;
+		BuilderShip ship = null;
+
 		@Override
 		public boolean onDown(MotionEvent e) {
-			
+			float yPos = screenHeight - e.getY() + yValue;
+			float xPos = e.getX();
+			for(int i = 0; i < world.ships.size(); i++) {
+				BuilderShip s = world.ships.get(i);
+				float xShip = s.x;
+				float yShip = s.yOrigin;
+
+				if(yShip > yPos - MARGIN_DETECT_SHIP && 
+				   yShip < yPos + MARGIN_DETECT_SHIP &&
+				   xShip > xPos - MARGIN_DETECT_SHIP &&
+				   xShip < xPos + MARGIN_DETECT_SHIP) {
+					onShip = true;
+					ship = s;
+					return true;
+				}
+
+			}
+			onShip = false;
+			ship = null;
 			return true;
 		}
 
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-		// Move all top	
-			scrollMoveElement(distanceY);
-			// If first top is return to the beginning
-			if(listTop.get(0) <= topBegin) {
-				scrollReturnBeginning();
+			if(!onShip) { // scrolling the screen
+				// Move all top	
+				scrollMoveElement(distanceY);
+				// If first top is return to the beginning
+				if(listTop.get(0) <= topBegin) {
+					scrollReturnBeginning();
+				}
+			}
+			else { // Add a gesture for a ship	
+				try {
+					ship.gesture = new ArrayList<PointF>();
+					PointF point = new PointF(e2.getX(), e2.getY());
+					ship.gesture.add(point);
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} 
 			}
 			// Can not acces to postInvalidate in abstract so use reDraw
 			reDraw();
@@ -69,11 +102,20 @@ public class Builder extends SurfaceView {
 
 		@Override
 		public void onLongPress(MotionEvent event) {
-			// Print windowPopup to choose the ennemie's ship
-			float posY = screenHeight - event.getY() + yValue;
-			System.out.println(posY);
-			((BuilderActivity)context).startPopupActivity(event.getX(), posY);
-			// Log.d("GestureDetector", "LongPress");
+			if(!onShip) {
+				// Print windowPopup to choose the ennemie's ship
+				float posY = screenHeight - event.getY() + yValue;
+				((BuilderActivity)context).startPopupActivity(event.getX(), posY);
+				// Log.d("GestureDetector", "LongPress");
+			}
+			else {
+				for(int i = 0; i < world.ships.size(); i++) {
+					if(ship.equals(world.ships.get(i))) {
+						world.ships.remove(i);
+						reDraw();
+					}
+				}
+			}
 		}
 	};
 
@@ -88,8 +130,8 @@ public class Builder extends SurfaceView {
 		// screenHeight = dm.ydpi;
 		// don't work value not determinate yet
 
-		world = new World(context);
-		
+		world = new BuilderWorld(context);
+
 		listTop = new ArrayList<Float>();
 
 
@@ -97,13 +139,12 @@ public class Builder extends SurfaceView {
 		mGestureDetector = new GestureDetector(context, mScrollHandler);
 		//screenHeight = START_POSITION;
 
-		// System.out.println("size of screen " + screenHeight);
 		callback();
 	}
-	
-	public void initiateWithWorld(World w) {
+
+	public void initiateWithWorld(BuilderWorld w) {
 		this.world = w;
-		
+
 		setBackground(w.background);
 	}
 
@@ -122,7 +163,6 @@ public class Builder extends SurfaceView {
 			listTop.add(f);
 			topBegin = f;
 
-			// System.out.println("Top value = " + top);
 			reDraw();
 			return true;
 		}
@@ -171,24 +211,19 @@ public class Builder extends SurfaceView {
 
 				canvas.drawBitmap(bitmap1, LEFT_POSITION, f, null);
 				if(i == nb - 1 && Math.abs(f) < bitmapHeight) {
-					
-					// System.out.println("Add top nb = " + nb);
-					
+
 					listTop.add(f - bitmapHeight);
 				}
 			}
 		}
-		
+
 		// For ship on the background
-		ArrayList<Ship> ships = world.ships;
+		ArrayList<BuilderShip> ships = world.ships;
 		int nbShip = ships.size();
 		for(int i = 0; i < nbShip; i++) {
-			Ship ship = ships.get(i);
+			BuilderShip ship = ships.get(i);
 			float yShip = ship.yActual;
-			
-			// System.out.println("----- DRAW SHIP -----");
-			// System.out.println(convertYtoDisplay(yShip));
-			
+
 			if(yShip > yValue && yShip < yValue + screenHeight) {
 				ship.draw(canvas, convertYtoDisplay(yShip));
 			}
@@ -235,7 +270,7 @@ public class Builder extends SurfaceView {
 		for(int i = 0; i < nbBackground; i++) {
 			listTop.set(i, listTop.get(i) - move);
 		}
-		
+
 		/*int nbShip = world.ships.size();
 		for(int i = 0; i < nbShip; i++) {
 			world.ships.get(i).yActual -= move;
@@ -251,37 +286,46 @@ public class Builder extends SurfaceView {
 			float f = topBegin + (-i) * bitmapHeight;
 			listTop.set(i, f);
 		}
-		
+
 		/*int nbShip = world.ships.size();
 		for(int i = 0; i < nbShip; i++) {
 			world.ships.get(i).yActual = world.ships.get(i).yOrigin;
 		}*/
 	}
-	
+
 	protected void addShip(String valueOfDrawable, float x, float y) {
 		if(world.ships.size() >= MAX_ENNEMIES) {
 			Toast.makeText(context, "Nombre maximum d'ennemies atteint", Toast.LENGTH_LONG).show();
 			return;
 		}
 		Bitmap bit = BitmapFactory.decodeResource(getResources(), Integer.parseInt(valueOfDrawable));
-		Ship ship = new Ship();
+		BuilderShip ship = new BuilderShip();
 		ship.bitmap = rotate(bit, 180);
 		int halfHeight = bit.getHeight() / 2;
-		int halfWidth = bit.getWidth() / 2;		
+		int halfWidth = bit.getWidth() / 2;	
 		
+		ship.ordinal = getOrdinalShip(valueOfDrawable);
 		ship.x = x - halfWidth;
 		ship.yActual = y + halfHeight;
 		ship.yOrigin = y + halfHeight;
-		
-		// System.out.println("----- Ship -----");
-		// System.out.println("X value = " + x);
-		// System.out.println("yActual value = " + ship.yActual);
-		
+
 		world.ships.add(ship);
-		// System.out.println("Nombre de ship = " + world.ships.size());
 		reDraw();
 	}
 	
+	private int getOrdinalShip(String value) {
+		if(value.equals(String.valueOf(R.drawable.ship1))) {
+			return ShipType.JUPITER.ordinal();
+		}
+		else if(value.equals(String.valueOf(R.drawable.ship3))) {
+			return ShipType.EARTH.ordinal();
+		} 
+		else if(value.equals(String.valueOf(R.drawable.ship4))) {
+			return ShipType.MOON.ordinal();
+		}
+		return Integer.MIN_VALUE;
+	}
+
 	private float convertYtoDisplay(float f) {
 		float ret = screenHeight - (f - yValue);
 		return ret;

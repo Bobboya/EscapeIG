@@ -1,6 +1,5 @@
-package fr.umlv.escapeig.builder;
+package fr.umlv.escapeig;
 
-import fr.umlv.escapeig.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,6 +15,9 @@ import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.widget.EditText;
 import android.widget.Toast;
+import fr.umlv.escapeig.R;
+import fr.umlv.escapeig.builder.Builder;
+import fr.umlv.escapeig.builder.BuilderWorld;
 
 public class BuilderActivity extends Activity {
 
@@ -30,9 +32,6 @@ public class BuilderActivity extends Activity {
 		Display display = getWindowManager().getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
-		int height = size.y;
-
-		System.out.println(height);
 
 		this.builder = new Builder(this);
 		builder.setBackground(BitmapFactory.decodeResource(getResources(), R.drawable.moon));
@@ -69,10 +68,6 @@ public class BuilderActivity extends Activity {
 		this.x = x;
 		this.y = y;
 
-		// System.out.println("----- startPopupActivity -----");
-		// System.out.println("x value = " + x);
-		// System.out.println("y value = " + y);
-
 		Intent intent = new Intent(this, PopupListActivity.class);
 		startActivityForResult(intent, 1);
 	}
@@ -93,8 +88,6 @@ public class BuilderActivity extends Activity {
 		} else if(requestCode == 25) { // Activity to change background
 			if(resultCode == RESULT_OK) {
 				String result = data.getStringExtra("result");
-				// File f = new File(result);
-				System.out.println(result);
 				Bitmap bitmap = BitmapFactory.decodeFile(result);
 				if(bitmap == null) {
 					Toast.makeText(this, "Ce fichier n'est pas une image", Toast.LENGTH_LONG).show();
@@ -108,7 +101,7 @@ public class BuilderActivity extends Activity {
 		} else if(requestCode == 50) { // Activity to load a level
 			if(resultCode == RESULT_OK) {
 				String result = data.getStringExtra("result");
-				World world = World.importLevel(result, this);
+				BuilderWorld world = BuilderWorld.importLevel(result, this);
 				if(world == null) {
 					Toast.makeText(this, "Impossible de charger ce niveau", Toast.LENGTH_LONG).show();
 					return;
