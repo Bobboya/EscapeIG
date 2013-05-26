@@ -5,7 +5,6 @@ import org.jbox2d.common.Vec2;
 public class Viewport {
 	
 	private boolean valid;
-	private boolean yFlip;
 	private float scaleX;
 	private float scaleY;
 
@@ -14,30 +13,29 @@ public class Viewport {
 	private int screenWidth;
 	private int screenHeight;
 	
-	public Viewport(int worldWidth, int worldHeight, int screenWidth, int screenHeight, boolean yFlip) {
+	public Viewport(int worldWidth, int worldHeight, int screenWidth, int screenHeight) {
 		this.worldWidth = worldWidth;
 		this.worldHeight = worldHeight;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.valid = false;
-		this.yFlip = yFlip;
 		update();
 	}
 	
-	public Viewport(int worldWidth, int worldHeight, int screenWidth, int screenHeight) {
-		this(worldWidth, worldHeight, screenWidth, screenHeight, true);
-	}
-	
-	public boolean getWorldToScreen(Vec2 in, Vec2 out) {
+	public boolean getWorldToScreen(Vec2 in, Vec2 out, boolean revert) {
 		if (!valid) return false;
 		out.x = getWorldXToScreen(in.x);
-		out.y = getWorldYToScreen(in.y);
+		out.y = getWorldYToScreen(in.y, revert);
 		return true;
 	}
 	
-	public float getWorldYToScreen(float y) {
+	public boolean getWorldToScreen(Vec2 in, Vec2 out) {
+		return getWorldToScreen(in, out, true);
+	}
+	
+	public float getWorldYToScreen(float y, boolean revert) {
 		float val = y*scaleY;
-		if (yFlip) val = screenHeight-val;
+		if (revert) val = screenHeight-val;
 		return val;
 	}
 	
@@ -89,9 +87,4 @@ public class Viewport {
 	public int getScreenHeight() {
 		return screenHeight;
 	}
-
-	public void setYFlip(boolean b) {
-		yFlip = b;
-	}
-
 }

@@ -11,6 +11,7 @@ abstract class DescriptionShip {
 	Vec2 topLeft;
 	Vec2 bottomRight;
 	Actor.Type actor;
+	WeaponType defaultWeapon = WeaponType.MISSILE;
 }
 
 /**
@@ -20,6 +21,7 @@ abstract class DescriptionShip {
 public class ShipFactory {
 	
 	private final Board board;
+	private HeroShip hero;
 	
 	/**
 	 * @param board the world to create the weapons on
@@ -33,15 +35,19 @@ public class ShipFactory {
 	 * @param maxLife life of the hero ship
 	 * @return the hero ship
 	 */
-	public HeroShip createHeroShip (int maxLife) {
-		HeroShip ship = new HeroShip(maxLife);
+	public HeroShip getHeroShip () {
+		if (hero != null) return hero;
+		HeroShip ship = new HeroShip();
+		ship.weaponFactory = board.getWeaponFactory();
 		insertInWorld(ship);
 		GestureHandler.self.listeners.add(ship.gestureListener);
+		hero = ship;
 		return ship;
 	}
 	
-	EnnemyShip createEnnemy(ShipType type, float x, float y, boolean insert) throws ShipCreationException {
+	EnnemyShip createEnnemy(ShipType type, float x, float y, boolean insert) {
 		EnnemyShip ship = new EnnemyShip();
+		ship.weaponFactory = board.getWeaponFactory();
 		ship.init(x, y, type.desc());
 		if (insert)insertInWorld(ship);
 		return ship;
@@ -55,7 +61,7 @@ public class ShipFactory {
 	 * @return the xreated ship
 	 * @throws ShipCreationException
 	 */
-	public EnnemyShip createEnnemy(ShipType type, float x, float y) throws ShipCreationException {
+	public EnnemyShip createEnnemy(ShipType type, float x, float y) {
 		return createEnnemy(type, x, y, true);
 	}
 	

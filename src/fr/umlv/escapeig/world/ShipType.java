@@ -1,6 +1,5 @@
 package fr.umlv.escapeig.world;
 
-import fr.umlv.escapeig.weapon.WeaponType;
 
 /**
  * The different types of ship

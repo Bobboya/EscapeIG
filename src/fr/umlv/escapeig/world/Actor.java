@@ -5,7 +5,7 @@ import org.jbox2d.common.Vec2;
 /**
  * Implements this interface to be added in a GameWorld
  */
-public interface Actor extends ContactListener {
+public interface Actor {
 	
 	/**
 	 * 
@@ -25,6 +25,7 @@ public interface Actor extends ContactListener {
 	void step();
 	int getImage();
 	int getGroup();
+	void touch(Actor actor);
 	
 	/**
 	 * Enum of all element of WorldActor

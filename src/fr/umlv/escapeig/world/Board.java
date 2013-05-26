@@ -37,22 +37,26 @@ public class Board {
 	private boolean running;
 	private final Thread play;
 	final World world;
+	
 	public final ArrayList<Actor> actors;
 	public final ArrayList<ScrollingBackground> backgrounds;
+	
 	private ShipFactory sf;
+	private WeaponFactory wf;
+	
 	private BoardView listener;
 	private final Body groundBody;
 
 	private Board (int width, int height) {
+		
 		this.world = new World(new Vec2(0,0));
-		this.actors = new ArrayList<Actor>();
+		world.setContactListener(new WorldContactListener());
+		this.actors = new ArrayList<Actor>(64);
 		this.backgrounds = new ArrayList<ScrollingBackground>();
 		this.running = false;
-		
 		this.groundBody = world.createBody(new BodyDef());
 		
 		play = new Thread (new Runnable() {
-			
 			@Override
 			public void run() {
 				while (!Thread.interrupted()) {
@@ -82,7 +86,7 @@ public class Board {
 	private void createWall (float x1, float y1, float x2, float y2) {
 		final FixtureDef wallFixtureDef = new FixtureDef();
 		wallFixtureDef.restitution = 0;
-		wallFixtureDef.friction = 1f;
+		wallFixtureDef.friction = 0;
 		wallFixtureDef.filter.groupIndex = WALL_INDEX;
 		
 		final EdgeShape groundShape = new EdgeShape();
@@ -96,13 +100,16 @@ public class Board {
 		return sf;
 	}
 	
+	public WeaponFactory getWeaponFactory () {
+		return wf;
+	}
+	
 	public void createBackground(int image, int width, int height) {
 		ScrollingBackground sb = new ScrollingBackground(image, width, height, BACKGROUND_SPEED);
 		backgrounds.add(sb);
 	}
 	
 	private static Board create(int width, int height) {
-		
 		Board board = new Board(width, height);
 		board.createWall(0, 0, width, 0);
 		board.createWall(0, 0, 0, height);
@@ -110,6 +117,7 @@ public class Board {
 		board.createWall(width, 0, width, height);
 		
 		board.sf = new ShipFactory(board);
+		board.wf = new WeaponFactory(board);
 		return board;
 	}
 	
@@ -131,5 +139,9 @@ public class Board {
 	
 	public void register (BoardView view) {
 		listener = view;
+	}
+	
+	public HeroShip getHero () {
+		return getShipFactory().getHeroShip();
 	}
 }

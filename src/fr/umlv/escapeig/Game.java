@@ -30,7 +30,7 @@ public class Game extends Activity {
 		GestureHandler.self.loadGesture(this, R.raw.gestures);
 		
 		board = Board.create();
-		board.getShipFactory().createHeroShip(100);
+		board.getShipFactory().getHeroShip();
 		board.createBackground(R.drawable.moon,
 				BitmapFactory.decodeResource(getResources(), R.drawable.moon).getWidth(),
 				BitmapFactory.decodeResource(getResources(), R.drawable.moon).getHeight());

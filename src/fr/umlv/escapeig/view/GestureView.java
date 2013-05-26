@@ -17,11 +17,11 @@ public class GestureView extends GestureOverlayView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event){
-		boolean b = super.onTouchEvent(event);
+		gestureDetector.onTouchEvent(event);
+		super.onTouchEvent(event);
 		if (event.getAction() == MotionEvent.ACTION_UP)
 			return GestureHandler.self.onUp(event);
-		gestureDetector.onTouchEvent(event);
-		return b;
+		return true;
 	}
 
 }

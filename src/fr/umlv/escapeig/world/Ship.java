@@ -6,18 +6,21 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-import fr.umlv.escapeig.weapon.Weapon;
+import android.util.Log;
+
 
 public abstract class Ship implements Actor {
 	
 	protected final BodyDef bdef = new BodyDef();
 	protected final FixtureDef fdef = new FixtureDef();
-	private final Vec2 tl = new Vec2();
-	private final Vec2 br = new Vec2();
+	final Vec2 tl = new Vec2();
+	final Vec2 br = new Vec2();
 	
 	Body body;
 	Weapon weapon;
 	DescriptionShip shipDescription;
+	WeaponFactory weaponFactory;
+	public WeaponType defaultWeapon;
 	
 	protected Ship () {
 		
@@ -27,16 +30,20 @@ public abstract class Ship implements Actor {
 			float x, float y, float angle,
 			DescriptionShip sd, int groupIndex) {
 		
+		tl.set(sd.topLeft.x, sd.topLeft.y);
+		br.set(sd.bottomRight.x, sd.bottomRight.y);
+		
 		bdef.type = BodyType.DYNAMIC;
 		bdef.position.set(x, y);
 		bdef.angle = angle;
 		
 		fdef.restitution = 0;
-		fdef.density = 0;
+		fdef.density = 0.00001f;
 		fdef.shape = sd.shape;
 		fdef.filter.groupIndex = groupIndex;
 		
 		shipDescription = sd;
+		defaultWeapon = sd.defaultWeapon;
 	}
 	
 	public Vec2 getPosition () {
@@ -50,17 +57,11 @@ public abstract class Ship implements Actor {
 	
 	@Override
 	public Vec2 getTopLeft () {
-		Vec2 pos = body.getPosition();
-		tl.x = pos.x+shipDescription.topLeft.x;
-		tl.y = pos.y+shipDescription.topLeft.y;
 		return tl;
 	}
 	
 	@Override
 	public Vec2 getBottomRight () {
-		Vec2 pos = body.getPosition();
-		br.x = pos.x+shipDescription.bottomRight.x;
-		br.y = pos.y+shipDescription.bottomRight.y;
 		return br;
 	}
 	
@@ -69,8 +70,13 @@ public abstract class Ship implements Actor {
 		return body.getAngle();
 	}
 
-	public void fire(float theta) {
-		weapon.fire(theta);
+	public void fire(float x, float y) {
+		if (weapon == null) return;
+		boolean b = weapon.fire(x, y);
+		Log.d("Weapon", (b? "fired" : "not fired"));
+		if (b) {
+			weapon = null;
+		}
 	}
 	
 	protected void kill () {
@@ -79,6 +85,12 @@ public abstract class Ship implements Actor {
 	@Override
 	public int getImage() {
 		return shipDescription.image;
+	}
+	
+	public void loadWeapon () {
+		//Log.d("Weapon", (weapon == null?"null":defaultWeapon.name()));
+		if (weapon != null) return;
+		weapon = weaponFactory.create(defaultWeapon, this);
 	}
 
 }

@@ -12,11 +12,11 @@ public class EnnemyShip extends Ship {
 	private static final int GROUP_INDEX = Board.WALL_INDEX;
 	private static final float ANGLE = MathUtils.PI;
 	private boolean isDead;
-		
+
 	@Override
-	public void fire(float theta) {
+	public void fire(float x, float y) {
 		if (isDead) return;
-		weapon.fire(3*(MathUtils.PI/2));
+		weapon.fire(x,y);
 	}
 
 	@Override

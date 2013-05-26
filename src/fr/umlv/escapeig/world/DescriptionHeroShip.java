@@ -11,15 +11,7 @@ class DescriptionHeroShip extends DescriptionShip {
 
 	DescriptionHeroShip () {
 		PolygonShape polygon = new PolygonShape();
-		Vec2 vertices[] = new Vec2[6];
-		vertices[0] = new Vec2(-2.5f, 5.75f);
-		vertices[1] = new Vec2(-4.75f,0);
-		vertices[2] = new Vec2(-2.25f, -3.255f);
-		vertices[3] = new Vec2(2.25f, -3.25f);
-		vertices[4] = new Vec2(4.75f, 0);
-		vertices[5] = new Vec2(2.5f, 5.75f);
-		polygon.set(vertices, 6);
-		polygon.m_centroid.set(0, 0);
+		polygon.setAsBox(4.75f, 5.75f);
 		
 		image = R.drawable.ship2;
 		shape = polygon;

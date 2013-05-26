@@ -1,0 +1,9 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/backText"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_vertical"
+    android:textColor="#000000"
+    android:textIsSelectable="false"
+    android:textSize="20sp"
+    android:textStyle="bold" />

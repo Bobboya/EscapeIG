@@ -13,6 +13,7 @@ import fr.umlv.escapeig.gesture.ComplexOnGestureListener;
  */
 public class HeroShip extends Ship {
 
+	private static final int MAX_LIFE = 5;
 	public static final int GROUP_INDEX = -1;
 	private static final float SPEED = 0.2f;
 	private static final int MOTION_MARGIN = 30;
@@ -29,12 +30,12 @@ public class HeroShip extends Ship {
 	
 	GestureListener gestureListener = new GestureListener(); 
 
-	HeroShip(int maxLife) {
+	HeroShip() {
 		super(50f, 50f, ANGLE,
 			ShipType.HERO.desc(),
 			GROUP_INDEX);
 		this.loopingImages = ((DescriptionHeroShip)ShipType.HERO.desc()).loopingImages;
-		this.maxLife = maxLife;
+		this.maxLife = MAX_LIFE;
 		this.life = maxLife;
 	}
 	
@@ -51,8 +52,6 @@ public class HeroShip extends Ship {
 	
 	@Override
 	public void kill() {
-		//super.kill();
-		//isDead = true;
 	}
 	
 	/**
@@ -122,7 +121,7 @@ public class HeroShip extends Ship {
 			
 			pos.x = (SPEED)*(distanceX > 0 ? -1 : 1)*(distanceX == 0 ? 0 : 1);
 			pos.y = (SPEED)*(distanceY > 0 ? 1 : -1)*(distanceY == 0 ? 0 : 1);
-			body.applyLinearImpulse(pos, body.getWorldCenter());
+			body.applyForceToCenter(pos);
 			return true;
 		}
 		
@@ -134,8 +133,30 @@ public class HeroShip extends Ship {
 			return true;
 		}
 
+		@Override
 		public boolean onRing () {
 			godOn();
+			return true;
+		}
+		
+		@Override
+		public boolean onFling (MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			loadWeapon();
+			fire(velocityX, -velocityY);
+			return true;
+		}
+		
+		@Override
+		public boolean onSingleTapUp (MotionEvent e) {
+			loadWeapon();
+			return true;
+		}
+		
+		@Override
+		public boolean onDoubleTap (MotionEvent e) {
+			int pos = defaultWeapon.ordinal()+1;
+			WeaponType[] values = WeaponType.values();
+			defaultWeapon = values[pos%values.length];
 			return true;
 		}
 	}

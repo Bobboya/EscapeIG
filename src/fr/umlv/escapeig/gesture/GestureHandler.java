@@ -15,27 +15,45 @@ import android.view.MotionEvent;
 public class GestureHandler extends ComplexOnGestureListener implements OnGesturePerformedListener {
 	
 	public static final GestureHandler self = new GestureHandler();
-	private static final double MIN_SCORE = 4;
+	private static final double MIN_SCORE = 1;
 	
 	public final ArrayList<ComplexOnGestureListener> listeners = new ArrayList<ComplexOnGestureListener>();
 	public GestureLibrary gLibrary;
-	
-	private GestureHandler () {
-		
-	}
 	
 	@Override
 	public boolean onScroll (MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 		for (ComplexOnGestureListener listener : listeners)
 			listener.onScroll(e1, e2, distanceX, distanceY);
-		return true;
+		return false;
+	}
+	
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)  {
+		for (ComplexOnGestureListener listener : listeners)
+			listener.onFling(e1, e2, velocityX, velocityY);
+		return false;
+	}
+	
+	@Override
+	public boolean onSingleTapUp(MotionEvent e)  {
+		for (ComplexOnGestureListener listener : listeners) {
+			if (!listener.onSingleTapUp(e)) return false;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean onDoubleTap(MotionEvent e)  {
+		for (ComplexOnGestureListener listener : listeners)
+			listener.onDoubleTap(e);
+		return false;
 	}
 	
 	@Override
 	public boolean onUp (MotionEvent e1) {
 		for (ComplexOnGestureListener listener : listeners)
 			listener.onUp(e1);
-		return true;
+		return false;
 	}
 
 	@Override
@@ -47,6 +65,7 @@ public class GestureHandler extends ComplexOnGestureListener implements OnGestur
 		for (int i = 0; i<predictions.size(); ++i) {
 			Prediction prediction = predictions.get(i);
 			if (prediction.score > MIN_SCORE) {
+				Log.d("Gesture", " "+prediction.score);
 				if (best == null) {
 					best = prediction;
 					maxScore = prediction.score;
@@ -60,7 +79,6 @@ public class GestureHandler extends ComplexOnGestureListener implements OnGestur
 		
 		//Match the gesture
 		if (best != null) {
-			Log.d("Gesture", best.name+" "+best.score);
 			if (best.name.equalsIgnoreCase("Square")) {
 				for(ComplexOnGestureListener listener : listeners) {
 					listener.onSquare();

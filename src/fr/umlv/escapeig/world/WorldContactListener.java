@@ -2,16 +2,9 @@ package fr.umlv.escapeig.world;
 
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
-import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 
 class WorldContactListener implements org.jbox2d.callbacks.ContactListener {
-	
-	private WorldContactListener () {}
-	
-	public static void create(World world) {
-		world.setContactListener(new WorldContactListener());
-	}
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -19,18 +12,14 @@ class WorldContactListener implements org.jbox2d.callbacks.ContactListener {
 		Actor actorA = null;
 		Actor actorB = null;
 		
-		try {
-			actorA = Actor.class.cast(contact.getFixtureA().getBody().m_userData);
-			actorB = Actor.class.cast(contact.getFixtureB().getBody().m_userData);
-		} catch (ClassCastException e) {
-			actorA = null;
-			actorB = null;
+		if (contact.getFixtureA().getBody().m_userData instanceof Actor) {
+			actorA = (Actor)contact.getFixtureA().getBody().m_userData;
 		}
-		
-		if (actorA == null || actorB == null) return;
-		
-		actorA.touch(actorB);
-		actorB.touch(actorA);
+		if (contact.getFixtureB().getBody().m_userData instanceof Actor) {
+			actorB = (Actor)contact.getFixtureB().getBody().m_userData;
+		}
+		if (actorA != null) actorA.touch(actorB);
+		if (actorB != null) actorB.touch(actorA);
 	}
 	
 	@Override
