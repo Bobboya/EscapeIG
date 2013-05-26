@@ -41,5 +41,4 @@ public class GameActivity extends Activity {
         
 		board.play();
 	}
-
 }
