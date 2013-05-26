@@ -2,7 +2,6 @@ package fr.umlv.escapeig.world;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
@@ -47,7 +46,6 @@ public class Board {
 	
 	public final ArrayList<Actor> actors;
 	public final ArrayList<ScrollingBackground> backgrounds;
-	private final HashMap<Integer, Ship> ships = new HashMap<Integer, Ship>();
 	
 	private ShipFactory sf;
 	private WeaponFactory wf;
