@@ -12,10 +12,10 @@ import org.jbox2d.dynamics.World;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.PointF;
 import android.util.Log;
 import fr.umlv.escapeig.builder.BuilderShip;
 import fr.umlv.escapeig.builder.BuilderWorld;
+import fr.umlv.escapeig.builder.PointFL;
 import fr.umlv.escapeig.view.BoardView;
 
 /**
@@ -171,9 +171,9 @@ public class Board {
 			float y = s.yOrigin*heightRatio+Board.HEIGHT;
 			EnnemyShip ennemy = sf.createEnnemy(shipTypes[s.ordinal], x, y);
 			if (s.gesture != null) {
-				for (PointF p : s.gesture) {
-					p.x = p.x*widthRatio;
-					p.y = p.y*heightRatio;
+				for(PointFL p : s.gesture) {
+					p.x = p.x * widthRatio;
+					p.y = p.y * heightRatio;
 				}
 			}
 			ennemy.gesture = s.gesture;

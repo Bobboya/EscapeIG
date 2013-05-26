@@ -2,12 +2,11 @@ package fr.umlv.escapeig.world;
 
 import java.util.ArrayList;
 
-import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 
-import android.graphics.PointF;
 import android.util.Log;
+import fr.umlv.escapeig.builder.PointFL;
 
 /**
  * An ennemy ship
@@ -18,7 +17,7 @@ public class EnnemyShip extends Ship {
 	private static final int GROUP_INDEX = Board.WALL_INDEX;
 	private static final float ANGLE = 0;
 	private boolean isDead;
-	ArrayList<PointF> gesture;
+	ArrayList<PointFL> gesture;
 	
 	@Override
 	public Vec2 getPosition () {

@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.PointF;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -87,8 +86,8 @@ public class Builder extends SurfaceView {
 			}
 			else { // Add a gesture for a ship	
 				try {
-					ship.gesture = new ArrayList<PointF>();
-					PointF point = new PointF(e2.getX(), e2.getY());
+					ship.gesture = new ArrayList<PointFL>();
+					PointFL point = new PointFL(e2.getX(), e2.getY());
 					ship.gesture.add(point);
 					Thread.sleep(50);
 				} catch (InterruptedException e) {

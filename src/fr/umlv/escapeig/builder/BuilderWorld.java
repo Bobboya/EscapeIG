@@ -14,7 +14,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.graphics.PointF;
 import android.os.Environment;
 import android.widget.Toast;
 import fr.umlv.escapeig.world.ShipType;
@@ -70,8 +69,8 @@ public class BuilderWorld implements Serializable {
 					oos.writeInt(ship.ordinal);
 					oos.flush();
 				}
-				//oos.writeFloat(screenWidth);
-				//oos.writeFloat(screenHeight);
+				oos.writeFloat(screenWidth);
+				oos.writeFloat(screenHeight);
 				oos.flush();
 				
 				oos.close();
@@ -103,15 +102,15 @@ public class BuilderWorld implements Serializable {
 				float x = ois.readFloat(); 
 				float y = ois.readFloat();
 				@SuppressWarnings("unchecked") // safe cast
-				ArrayList<PointF> gesture = (ArrayList<PointF>)ois.readObject();
+				ArrayList<PointFL> gesture = (ArrayList<PointFL>)ois.readObject();
 				int ordinal = ois.readInt();
 				Bitmap bitShip = BitmapFactory.decodeResource(context.getResources(), getImg(ordinal));
 				Bitmap bitShipRotate = Builder.rotate(bitShip, 180);
 				BuilderShip ship = new BuilderShip(x, y, bitShipRotate, ordinal, gesture);
 				world.ships.add(ship);
 			}
-			//world.screenWidth = ois.readFloat();
-			//world.screenHeight = ois.readFloat();
+			world.screenWidth = ois.readFloat();
+			world.screenHeight = ois.readFloat();
 
 			return world;
 

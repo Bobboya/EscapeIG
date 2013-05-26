@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.PointF;
 
 public class BuilderShip implements Serializable {
 
@@ -20,13 +19,13 @@ public class BuilderShip implements Serializable {
 	
 	public int ordinal;
 	
-	public ArrayList<PointF> gesture;
+	public ArrayList<PointFL> gesture;
 	
 	public BuilderShip() {
 		this(0, 0, null, 0, null);
 	}
 	
-	public BuilderShip(float x, float y, Bitmap bitmap, int ordinal, ArrayList<PointF> gesture) {
+	public BuilderShip(float x, float y, Bitmap bitmap, int ordinal, ArrayList<PointFL> gesture) {
 		this.x = x;
 		this.yActual = y;
 		this.yOrigin = y;
