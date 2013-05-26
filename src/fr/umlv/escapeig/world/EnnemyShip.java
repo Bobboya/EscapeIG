@@ -1,7 +1,13 @@
 package fr.umlv.escapeig.world;
 
+import java.util.ArrayList;
+
 import org.jbox2d.common.MathUtils;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
+
+import android.graphics.PointF;
+import android.util.Log;
 
 /**
  * An ennemy ship
@@ -10,8 +16,27 @@ import org.jbox2d.dynamics.BodyType;
 public class EnnemyShip extends Ship {
 	
 	private static final int GROUP_INDEX = Board.WALL_INDEX;
-	private static final float ANGLE = MathUtils.PI;
+	private static final float ANGLE = 0;
 	private boolean isDead;
+	ArrayList<PointF> gesture;
+	
+	@Override
+	public Vec2 getPosition () {
+		Log.d("Ennemy", "pos: "+super.getPosition());
+		return super.getPosition();
+	}
+	
+	@Override
+	public Vec2 getTopLeft() {
+		Log.d("Ennemy", "tl: "+super.getTopLeft());
+		return super.getTopLeft();
+	}
+	
+	@Override
+	public Vec2 getBottomRight () {
+		Log.d("Ennemy", "br: "+super.getBottomRight());
+		return super.getBottomRight();
+	}
 
 	@Override
 	public void fire(float x, float y) {
@@ -37,6 +62,9 @@ public class EnnemyShip extends Ship {
 	}
 	
 	void init (float x, float y, DescriptionShip sd) {
+		tl.set(sd.topLeft.x, sd.topLeft.y);
+		br.set(sd.bottomRight.x, sd.bottomRight.y);
+		
 		bdef.type = BodyType.DYNAMIC;
 		bdef.position.set(x, y);
 		bdef.angle = ANGLE;

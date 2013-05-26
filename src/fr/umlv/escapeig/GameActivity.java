@@ -29,11 +29,14 @@ public class GameActivity extends Activity {
 		
 		GestureHandler.self.loadGesture(this, R.raw.gestures);
 		
-		board = Board.create();
+		board = Board.createBoard(this, "/mnt/sdcard/test21.lvl");
 		board.getShipFactory().getHeroShip();
+<<<<<<< HEAD
 		board.createBackground(BitmapFactory.decodeResource(getResources(), R.drawable.moon),
 				BitmapFactory.decodeResource(getResources(), R.drawable.moon).getWidth(),
 				BitmapFactory.decodeResource(getResources(), R.drawable.moon).getHeight());
+=======
+>>>>>>> Merge
 		
 		boardView = new BoardView(this, board);
 		

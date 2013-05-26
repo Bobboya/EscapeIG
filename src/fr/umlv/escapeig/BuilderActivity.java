@@ -131,7 +131,7 @@ public class BuilderActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String value = input.getText().toString();
-				builder.world.exportLevel(value);
+				builder.world.exportLevel(value, builder.screenWidth, builder.screenHeight);
 				return;
 			}
 		});

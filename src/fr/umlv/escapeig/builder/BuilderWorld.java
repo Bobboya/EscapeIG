@@ -26,15 +26,17 @@ public class BuilderWorld implements Serializable {
 
 	public Bitmap background;
 	public ArrayList<BuilderShip> ships;
+	public float screenWidth;
+	public float screenHeight;
 
 	private Context context;
-
+	
 	public BuilderWorld(Context context) {
 		ships = new ArrayList<BuilderShip>();
 		this.context = context;
 	}
 
-	public void exportLevel(String nameFile) {
+	public void exportLevel(String nameFile, float screenWidth, float screenHeight) {
 		try {
 			File ret = Environment.getExternalStorageDirectory();
 			String state = Environment.getExternalStorageState();
@@ -68,6 +70,10 @@ public class BuilderWorld implements Serializable {
 					oos.writeInt(ship.ordinal);
 					oos.flush();
 				}
+				//oos.writeFloat(screenWidth);
+				//oos.writeFloat(screenHeight);
+				oos.flush();
+				
 				oos.close();
 			} else {
 				Toast.makeText(context, "Impossible d'exporter le niveau", Toast.LENGTH_LONG).show();
@@ -104,6 +110,8 @@ public class BuilderWorld implements Serializable {
 				BuilderShip ship = new BuilderShip(x, y, bitShipRotate, ordinal, gesture);
 				world.ships.add(ship);
 			}
+			//world.screenWidth = ois.readFloat();
+			//world.screenHeight = ois.readFloat();
 
 			return world;
 

@@ -2,6 +2,7 @@ package fr.umlv.escapeig.world;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
@@ -12,6 +13,8 @@ import org.jbox2d.dynamics.World;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PointF;
+import android.util.Log;
 import fr.umlv.escapeig.builder.BuilderShip;
 import fr.umlv.escapeig.builder.BuilderWorld;
 import fr.umlv.escapeig.view.BoardView;
@@ -44,6 +47,7 @@ public class Board {
 	
 	public final ArrayList<Actor> actors;
 	public final ArrayList<ScrollingBackground> backgrounds;
+	private final HashMap<Integer, Ship> ships = new HashMap<Integer, Ship>();
 	
 	private ShipFactory sf;
 	private WeaponFactory wf;
@@ -157,10 +161,28 @@ public class Board {
 				toLoad.background.getWidth(),
 				toLoad.background.getHeight());
 		
+		toLoad.screenHeight = 1100;
+		toLoad.screenWidth = 700;
+		
+		ShipType shipTypes[] = ShipType.values();
 		ShipFactory sf = board.getShipFactory();
+		float widthRatio = Board.WIDTH/toLoad.screenWidth;
+		float heightRatio = Board.HEIGHT/toLoad.screenHeight;
 		for (BuilderShip s : toLoad.ships) {
-			
+			float x = s.x*widthRatio;
+			float y = s.yOrigin*heightRatio+Board.HEIGHT;
+			EnnemyShip ennemy = sf.createEnnemy(shipTypes[s.ordinal], x, y);
+			if (s.gesture != null) {
+				for (PointF p : s.gesture) {
+					p.x = p.x*widthRatio;
+					p.y = p.y*heightRatio;
+				}
+			}
+			ennemy.gesture = s.gesture;
+			if (ennemy.body == null) Log.d("Init", "body null");
+			ennemy.body.applyForceToCenter(new Vec2(0,-2));
 		}
+		board.getShipFactory().getHeroShip();
 		
 		return board;
 	}

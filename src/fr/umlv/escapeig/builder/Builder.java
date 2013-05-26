@@ -35,7 +35,8 @@ public class Builder extends SurfaceView {
 	protected float topBegin;
 
 	protected float bitmapHeight;
-	protected float screenHeight;
+	public float screenHeight;
+	public float screenWidth;
 
 	// y value in left bottom
 	protected float yValue = 0;
@@ -246,6 +247,7 @@ public class Builder extends SurfaceView {
 			@Override
 			public void surfaceChanged(SurfaceHolder arg0, int arg1, int width, int height){  
 				screenHeight = height;
+				screenWidth = width;
 			}
 		});	
 	}

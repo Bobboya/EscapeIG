@@ -6,8 +6,6 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-import android.util.Log;
-
 
 public abstract class Ship implements Actor {
 	
@@ -74,7 +72,6 @@ public abstract class Ship implements Actor {
 	public void fire(float x, float y) {
 		if (weapon == null) return;
 		boolean b = weapon.fire(x, y);
-		Log.d("Weapon", (b? "fired" : "not fired"));
 		if (b) {
 			weapon = null;
 		}
@@ -89,7 +86,6 @@ public abstract class Ship implements Actor {
 	}
 	
 	public void loadWeapon () {
-		//Log.d("Weapon", (weapon == null?"null":defaultWeapon.name()));
 		if (weapon != null) return;
 		weapon = weaponFactory.create(defaultWeapon, this);
 	}

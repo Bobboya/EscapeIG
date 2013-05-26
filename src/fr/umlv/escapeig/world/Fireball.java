@@ -32,15 +32,15 @@ class Fireball extends Weapon {
 	
 	@Override
 	public Vec2 getTopLeft () {
-		temptl.x = -current*DescriptionFireball.RADIUS/LOADING_TIME;
-		temptl.y = current*DescriptionFireball.RADIUS/LOADING_TIME;
+		temptl.x = -(float)current*DescriptionFireball.RADIUS/LOADING_TIME;
+		temptl.y = (float)current*DescriptionFireball.RADIUS/LOADING_TIME;
 		return temptl;
 	}
 	
 	@Override
 	public Vec2 getBottomRight () {
-		tempbr.x = current*DescriptionFireball.RADIUS/LOADING_TIME;
-		tempbr.y = -current*DescriptionFireball.RADIUS/LOADING_TIME;
+		tempbr.x = (float)current*DescriptionFireball.RADIUS/LOADING_TIME;
+		tempbr.y = -(float)current*DescriptionFireball.RADIUS/LOADING_TIME;
 		return tempbr;
 	}
 	
