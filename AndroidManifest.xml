@@ -5,29 +5,50 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
 
-    <uses-feature
-        android:glEsVersion="0x00010000"
-        android:required="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true" >
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="fr.umlv.escapeig.GameActivity"
-            android:label="@string/title_activity_game" >
+            android:name="fr.umlv.escapeig.MainActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="fr.umlv.escapeig.GameActivity"
+            android:label="@string/gameActivity"
+            android:parentActivityName="fr.umlv.escapeig.MainActivity" >
+        </activity>
+        <activity
+            android:name="fr.umlv.escapeig.BuilderActivity"
+            android:label="@string/builderActivity"
+            android:parentActivityName="fr.umlv.escapeig.MainActivity" >
+        </activity>
+        <activity
+            android:name="fr.umlv.escapeig.PopupListActivity"
+            android:label="@string/popupActivity"
+            android:parentActivityName="fr.umlv.escapeig.BuilderActivity" >
+        </activity>
+        <activity
+            android:name="fr.umlv.escapeig.builder.ChooseBackListActivity"
+            android:label="@string/backActivity"
+            android:parentActivityName="fr.umlv.escapeig.BuilderActivity" >
+        </activity>
+        <activity
+            android:name="fr.umlv.escapeig.builder.ImportLevelListActivity"
+            android:label="@string/backActivity"
+            android:parentActivityName="fr.umlv.escapeig.BuilderActivity" >
+        </activity>
     </application>
 
 </manifest>

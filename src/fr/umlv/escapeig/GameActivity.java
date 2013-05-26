@@ -31,7 +31,7 @@ public class GameActivity extends Activity {
 		
 		board = Board.create();
 		board.getShipFactory().getHeroShip();
-		board.createBackground(R.drawable.moon,
+		board.createBackground(BitmapFactory.decodeResource(getResources(), R.drawable.moon),
 				BitmapFactory.decodeResource(getResources(), R.drawable.moon).getWidth(),
 				BitmapFactory.decodeResource(getResources(), R.drawable.moon).getHeight());
 		

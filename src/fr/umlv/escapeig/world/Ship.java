@@ -46,6 +46,7 @@ public abstract class Ship implements Actor {
 		defaultWeapon = sd.defaultWeapon;
 	}
 	
+	@Override
 	public Vec2 getPosition () {
 		return body.getPosition();
 	}

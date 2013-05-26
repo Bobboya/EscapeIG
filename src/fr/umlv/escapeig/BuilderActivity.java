@@ -12,10 +12,8 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SurfaceView;
 import android.widget.EditText;
 import android.widget.Toast;
-import fr.umlv.escapeig.R;
 import fr.umlv.escapeig.builder.Builder;
 import fr.umlv.escapeig.builder.BuilderWorld;
 
@@ -36,7 +34,7 @@ public class BuilderActivity extends Activity {
 		this.builder = new Builder(this);
 		builder.setBackground(BitmapFactory.decodeResource(getResources(), R.drawable.moon));
 
-		setContentView((SurfaceView)builder);
+		setContentView(builder);
 	}
 
 	@Override
@@ -72,6 +70,7 @@ public class BuilderActivity extends Activity {
 		startActivityForResult(intent, 1);
 	}
 
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if (requestCode == 1) { // Activity for add ship

@@ -27,7 +27,7 @@ class WeaponPicker extends ComplexOnGestureListener {
 		ylimit = dstRect.bottom;
 		xlimit = dstRect.right*types.length;
 		this.bm = bm;
-		ratio = 1/density/((float)dstRect.right/density);
+		ratio = 1/density/(dstRect.right/density);
 	}
 	
 	void draw(Canvas painter) {
