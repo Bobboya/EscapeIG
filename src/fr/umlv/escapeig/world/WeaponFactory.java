@@ -2,8 +2,6 @@ package fr.umlv.escapeig.world;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 
 /**
  * Create weapons

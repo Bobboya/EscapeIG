@@ -58,7 +58,7 @@ public class BoardView extends SurfaceView implements SurfaceHolder.Callback {
 		
 		
 		for (ScrollingBackground sb : board.backgrounds) {
-			Bitmap b = bm.getBitmap(sb.img);
+			Bitmap b = sb.bitmap;
 			float pos = -b.getHeight()+sb.currentY+viewportTransform.getScreenHeight();
 			if (pos > 0) {
 				painter.drawBitmap(b, 0, -b.getHeight()+pos, null);

@@ -21,10 +21,8 @@ import fr.umlv.escapeig.world.ShipType;
 
 public class BuilderWorld implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 962633937908070466L;
+	private static final ShipType shipTypes[] = ShipType.values();
 
 	public Bitmap background;
 	public ArrayList<BuilderShip> ships;
@@ -136,15 +134,7 @@ public class BuilderWorld implements Serializable {
 	}
 	
 	private static int getImg(int ordinal) {
-		if(ordinal == 0) {
-			return ShipType.JUPITER.desc.image;
-		}
-		if(ordinal == 1) {
-			return ShipType.MOON.desc.image;
-		}
-		if(ordinal == 2) {
-			return ShipType.EARTH.desc.image;
-		}
+		if (ordinal < shipTypes.length) return shipTypes[ordinal].desc.image;
 		return Integer.MIN_VALUE;
 	}
 }

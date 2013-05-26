@@ -1,8 +1,10 @@
 package fr.umlv.escapeig.world;
 
+import android.graphics.Bitmap;
+
 public class ScrollingBackground {
 	
-	public final int img;
+	public final Bitmap bitmap;
 	public float currentY;
 	public final int layerHeight;
 	public final int layerWidth;
@@ -15,8 +17,8 @@ public class ScrollingBackground {
 	 * @param height the layer height
 	 * @param scrollSpeed the delta between steps in pixel
 	 */
-	ScrollingBackground(int image, int width, int height, float scrollSpeed) {
-		this.img = image;
+	ScrollingBackground(Bitmap bitmap, int width, int height, float scrollSpeed) {
+		this.bitmap = bitmap;
 		this.layerHeight = height;
 		this.layerWidth = width;
 		this.currentY = 0;

@@ -120,7 +120,6 @@ public class BuilderActivity extends Activity {
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		final Builder builder = this.builder;
 		
-		
 		dialog.setTitle("Sauvegarder le niveau");
 		dialog.setMessage("Entrer le nom du fichier :");
 

@@ -10,6 +10,10 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import fr.umlv.escapeig.builder.BuilderShip;
+import fr.umlv.escapeig.builder.BuilderWorld;
 import fr.umlv.escapeig.view.BoardView;
 
 /**
@@ -104,7 +108,7 @@ public class Board {
 		return wf;
 	}
 	
-	public void createBackground(int image, int width, int height) {
+	public void createBackground(Bitmap image, int width, int height) {
 		ScrollingBackground sb = new ScrollingBackground(image, width, height, BACKGROUND_SPEED);
 		backgrounds.add(sb);
 	}
@@ -143,5 +147,21 @@ public class Board {
 	
 	public HeroShip getHero () {
 		return getShipFactory().getHeroShip();
+	}
+	
+	public static Board createBoard (Context ctx, String file) {
+		Board board = Board.create();
+		BuilderWorld toLoad = BuilderWorld.importLevel(file, ctx);
+		
+		board.createBackground(toLoad.background,
+				toLoad.background.getWidth(),
+				toLoad.background.getHeight());
+		
+		ShipFactory sf = board.getShipFactory();
+		for (BuilderShip s : toLoad.ships) {
+			
+		}
+		
+		return board;
 	}
 }

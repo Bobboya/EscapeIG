@@ -41,7 +41,7 @@ public class Builder extends SurfaceView {
 	protected float yValue = 0;
 
 	// Save the date of world under definition
-	protected BuilderWorld world;
+	public BuilderWorld world;
 
 	// Manage gesture scroll and long pressed
 	protected GestureDetector mGestureDetector;
@@ -148,7 +148,7 @@ public class Builder extends SurfaceView {
 		setBackground(w.background);
 	}
 
-	protected boolean setBackground(Bitmap bitmap) {
+	public boolean setBackground(Bitmap bitmap) {
 		if(bitmap == null) throw new IllegalStateException("Image vide");
 		if(this.bitmap1 == bitmap) return false;
 		try {
@@ -293,7 +293,7 @@ public class Builder extends SurfaceView {
 		}*/
 	}
 
-	protected void addShip(String valueOfDrawable, float x, float y) {
+	public void addShip(String valueOfDrawable, float x, float y) {
 		if(world.ships.size() >= MAX_ENNEMIES) {
 			Toast.makeText(context, "Nombre maximum d'ennemies atteint", Toast.LENGTH_LONG).show();
 			return;
